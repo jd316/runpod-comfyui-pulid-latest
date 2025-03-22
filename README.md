@@ -1,6 +1,51 @@
-# RunPod Flux-PuLID Serverless for Consistent Character Faces
+# ComfyUI with FluxPuLID for RunPod Serverless
 
-This repository contains all the necessary files to deploy ComfyUI with Flux-PuLID model on RunPod Serverless, specifically designed for creating images with consistent character faces.
+This repository contains a pre-configured setup for running ComfyUI with the FluxPuLID model on RunPod's serverless infrastructure. This setup enables consistent face generation across multiple images.
+
+## Manual Deployment Instructions
+
+### 1. GitHub Repository Setup
+The code is already pushed to GitHub at: https://github.com/jd316/runpod-comfyui-pulid-latest.git
+
+### 2. Deploy on RunPod Serverless
+1. Go to [RunPod Serverless Console](https://www.runpod.io/console/serverless)
+2. Click "New Endpoint"
+3. Enter the following settings:
+   - **Name**: "comfyui-pulid" (or any name you prefer)
+   - **Select GPU**: NVIDIA RTX A4000 (or better)
+   - **Worker Count**: Min: 0, Max: 1 (adjust based on your needs)
+   - **Advanced Options**: Enable if you want to adjust memory/storage
+   - **Container**: 
+     - **Source**: GitHub
+     - **Source URL**: https://github.com/jd316/runpod-comfyui-pulid-latest.git
+   - **Environment Variables**:
+     - **Key**: HF_TOKEN
+     - **Value**: Your HuggingFace token from https://huggingface.co/settings/tokens
+
+4. Click "Deploy"
+
+### 3. Testing Your Endpoint
+Once the endpoint is deployed and the worker is built (this can take 15-20 minutes for the first build as it downloads all models), you can test it using the RunPod API.
+
+### Important Notes
+- The first build will take time as it needs to download all the models (about 15-20 minutes)
+- Make sure your HuggingFace token has proper permissions to download the required models
+- For better performance, you might want to increase the worker count or use a more powerful GPU
+
+## Advanced: Using API to Deploy
+
+If you prefer to use the RunPod API to deploy your endpoint:
+
+1. Edit the `config.py` file with your RunPod API key and HuggingFace token
+2. Run the `create_endpoint.py` script:
+   ```
+   python create_endpoint.py
+   ```
+
+## Troubleshooting
+
+- If you encounter errors related to model downloads, check that your HuggingFace token is valid and has the proper permissions
+- If the container fails to build, check the build logs in the RunPod console for specific errors
 
 ## Features
 
